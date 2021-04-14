@@ -1,6 +1,10 @@
 # Database
+import database
 
-databaseOfAccounts = {}
+
+
+
+# databaseOfAccounts = {}
 
 def init():
     '''
@@ -77,9 +81,13 @@ def register():
 
     accountNo = genAccountNo()
 
-    databaseOfAccounts[accountNo] = [firstName, lastName,email, password]
-    print('Your account has been created.\nHere is your account Number %d please keep it safe.' % accountNo)
-    login()
+    is_user_created = database.create(accountNo,[firstName, lastName,email, password])
+    if is_user_created:
+        print('Your account has been created.\nHere is your account Number %d please keep it safe.' % accountNo)
+        login()
+    else:
+        print('Something went wrong.')
+        register()
 
 def genAccountNo():
     """
