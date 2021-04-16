@@ -4,7 +4,9 @@
 
 
 
+import os
 
+user_db_path = 'data/user_record/'
 
 def create(account_number,user_detail):
 
@@ -12,13 +14,14 @@ def create(account_number,user_detail):
 
     try:
 
-        file = open('data/user_record/'+ str(account_number) + '.txt', 'x' )
+        file = open(user_db_path +  str(account_number) + '.txt', 'x' )
         
 
     except FileExistsError:
         print('user already exist.')
 
-        return completion_state
+
+        
 
     else:
         file.write(str(user_detail));
@@ -59,7 +62,39 @@ def read(user_account_number):
 
 
 def delete(user_account_number):
-    pass 
+    validate =False
+    try:
+        if type(user_account_number) == int:
+            validate = True
+    except ValueError:
+        return 'error in account number'  
+
+    finally:
+        is_delete_successful = False
 
 
-create(5873434638, ['h','h','h','h'])
+        if os.path.exists(user_db_path+ str(user_account_number) +'.txt'):
+
+            try:
+                os.remove(user_db_path + str(user_account_number)+'.txt')
+                is_delete_successful = True
+
+
+            except FileNotFoundError:
+                print('file not  found')
+
+
+            finally:
+                return is_delete_successful
+
+
+        else:
+
+            print('file %d does not exist.'%(user_account_number)) 
+
+            return is_delete_successful
+
+
+
+# create(5873434638, ['h','h','h','h'])
+print(delete(5873434638))
