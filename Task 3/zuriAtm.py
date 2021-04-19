@@ -1,6 +1,6 @@
 # Database
 import database
-
+import validation
 
 
 
@@ -40,22 +40,30 @@ def login():
     except ValueError:
         print('Input was not a number')
         login() 
+        
     if ( loginOrForgottenPass == 1):
         try:
             userAccountNo = int(input('Please enter your Account Number?\n'))
+            is_valid_account_number = validation.account_number_validation(userAccountNo)
+            if is_valid_account_number:
+                userPassword = input('Please enter your password?\n')
+                user = database.authenticated_user(userAccountNo, userPassword)
+                
+                if user:
+                    print('Login Successful.')
+                    bankOperations(user)
+                        
+                            
+            else:
+                print('Account number invalid, check than you have 10 digits and all integers')
+
         except ValueError:
             print('The input were not number.')
             login()
-        userPassword = input('Please enter your password?\n')
-
-        for accountNum,userDetail in databaseOfAccounts.items():
-            if (userAccountNo == accountNum):
-                if (userPassword == userDetail[3]):
-                    
-                    print('Login Successful.')
+           
         else:             
             print('Invalid Account or Password')
-            bankOperations(userDetail)            
+            login()            
     elif (loginOrForgottenPass == 2):
         forgottenInfo()
         
@@ -80,8 +88,8 @@ def register():
     
 
     accountNo = genAccountNo()
-
-    is_user_created = database.create(accountNo,[firstName, lastName,email, password])
+    
+    is_user_created = database.create(accountNo,firstName, lastName, email,password)
     if is_user_created:
         print('Your account has been created.\nHere is your account Number %d please keep it safe.' % accountNo)
         login()
