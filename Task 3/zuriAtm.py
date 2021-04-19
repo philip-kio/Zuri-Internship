@@ -1,7 +1,8 @@
 # Database
+from typing import get_args
 import database
 import validation
-
+from getpass import getpass
 
 
 # databaseOfAccounts = {}
@@ -40,13 +41,14 @@ def login():
     except ValueError:
         print('Input was not a number')
         login() 
-        
+
     if ( loginOrForgottenPass == 1):
         try:
             userAccountNo = int(input('Please enter your Account Number?\n'))
             is_valid_account_number = validation.account_number_validation(userAccountNo)
             if is_valid_account_number:
-                userPassword = input('Please enter your password?\n')
+                # userPassword = input('Please enter your password?\n')
+                userPassword = getpass('Please enter your password?\n')
                 user = database.authenticated_user(userAccountNo, userPassword)
                 
                 if user:
@@ -84,7 +86,7 @@ def register():
     email = input('what is your email address? \n')
     firstName = input('what is your first name? \n')
     lastName = input('What is your last name? \n')
-    password = input('create your password?\n')
+    password = getpass('create your password?\n')
     
 
     accountNo = genAccountNo()
