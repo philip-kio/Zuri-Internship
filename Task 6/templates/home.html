@@ -14,7 +14,23 @@
     <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore quia nobis suscipit vero qui, nemo sapiente neque laborum magni obcaecati iusto fugit sed iure maxime ea similique dolores porro delectus.
     </p>
+    
+    <p>
+        Available books are:
+    </p>
+    
+    
+    {% for author in all_books %}
+    <p>
+        {{ author.book_author }} </p>
+    <p> {{ author.book_title }}</p>
+    <p>{{ author.year_published  }}</p>
+    <p>
+        {{ author.book_author | title }}
+    </p>
 
+    {% endfor %}
+</p>
     {% endif %}
     {% if book %}
    
@@ -23,6 +39,8 @@
 
         Done
     </p>
+
+    {# these are comments #}
     {% endif %}
 </body>
 </html>
