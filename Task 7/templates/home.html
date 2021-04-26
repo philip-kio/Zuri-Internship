@@ -13,17 +13,7 @@
     <a href="{% url 'edit_post' post.pk %}">Edit Post</a> 
     |
     <a href="{% url 'delete_post' post.pk %}">Delete Post</a>
-    <div>
-    {% for comment in post.comments.all %}
 
-    <p>
-        <h4>Comments</h4>
-        <span> {{ comment.author }}&middot;</span>
-        {{ comment }}
-    </p>
-
-    {% endfor %}
-    </div>  
 
 
 

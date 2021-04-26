@@ -1,11 +1,11 @@
 from django.forms import forms
-from django.shortcuts import render
 from .models import post
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import SignUpForm
+from .forms import NewCommentForm, SignUpForm
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404
 # Create your views here.
 
 
@@ -19,17 +19,26 @@ class BlogDetailView(DetailView):
     template_name = 'post_detail.html'
 
 
+
 class BlogCreateView(LoginRequiredMixin,CreateView):
     model= post 
     template_name = 'new_post.html'
     fields = ['title','body']
     login_url = 'login'
 
+class CommentFormView(LoginRequiredMixin,CreateView):
+    form_class = NewCommentForm
+    model = post
+    template_name = 'new_comment.html'
+    login_url = 'login'
+    success_url = 'home'
 
-    def form_valid(self, form):
-        form.instance.author = self.request.author
+    def form_valid(self, form, **kwargs):
+        self.object = form.save(commit=False)
+        self.object.author= self.request.user
+        self.object.posts= get_object_or_404(post)
+        self.object.save()
         return super().form_valid(form)
-
 
 class BlogUpdateView(LoginRequiredMixin,UpdateView):
     model = post
